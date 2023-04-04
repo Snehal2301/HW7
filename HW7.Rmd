@@ -93,27 +93,8 @@ ggplot(HAPPY, aes(x = DEGREE)) +
 
 ```
 
-```{r}
-library(ggplot2)
-
-# Replace "IAP", "DK", and "NA" with NA
-HAPPY <- HAPPY %>%
-  mutate(DEGREE = ifelse(DEGREE %in% c("IAP", "DK", "NA"), NA, INCOME))
-
-# Create scatterplot of HAPPY vs. AGE, colored by INCOME
-ggplot(HAPPY, aes(x = AGE, y = HAPPY, color = INCOME)) +
-  geom_point() +
-  labs(x = "Age", y = "Happiness Level", title = "Relationship between Age, Income, and Happiness") +
-  theme_minimal()
-
-
-
-
-
+#People with higher eductaion levels are most likely to be more happy or very happy and less likely to report not too happy or not at all happy,Conversely, people with lower education levels are more likely to report being "not too happy" or "not at all happy", and less likely to report being "very happy" or "pretty happy". This suggests that education level is positively associated with happiness.
 ```
 
-```{r}
 
-
-```
 
