@@ -1,0 +1,119 @@
+---
+title: "hw7"
+author: "Snehal"
+date: "2023-04-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+
+install.packages("productplots")
+library(productplots)
+library(dplyr)
+data(happy, package="productplots")
+head(happy)
+HAPPY <- readRDS("data/HAPPY.rds")
+```
+
+```{r}
+head(HAPPY)
+
+```
+
+```{r}
+# Load the data
+HAPPY <- readRDS("data/HAPPY.rds")
+
+# Replace "IAP", "DK", and "NA" with NA
+HAPPY <- replace(HAPPY, HAPPY == "IAP" | HAPPY == "DK" | HAPPY == "NA", NA)
+
+```
+
+```{r}
+
+
+#2
+HAPPY$AGE[HAPPY$AGE=='89 OR OLDER'] <- '89'
+typeof(HAPPY$AGE)
+numAge <- as.numeric(HAPPY$AGE)
+typeof(numAge)
+
+#3 CHECK
+# Order marital by average age
+library(dplyr)
+avg_age_by_marital <- HAPPY %>%
+  group_by(MARITAL) %>%
+  summarise(avg_age = mean(AGE, na.rm = TRUE))
+
+ordered_marital <- avg_age_by_marital %>%
+  arrange(avg_age) %>%
+  pull(MARITAL)
+
+HAPPY$MARITAL <- factor(HAPPY$MARITAL, levels = ordered_marital)
+
+library(ggplot2)
+
+# Replace "IAP", "DK", and "NA" with NA
+HAPPY <- HAPPY %>%
+  mutate(DEGREE = ifelse(DEGREE %in% c("IAP", "DK", "NA"), NA, DEGREE))
+
+# Convert DEGREE to factor
+HAPPY$DEGREE <- factor(HAPPY$DEGREE)
+
+# Create bar chart of DEGREE
+ggplot(HAPPY, aes(x = DEGREE)) +
+  geom_bar(fill = "blue", color = "white") +
+  labs(x = "Education Level", y = "Count", title = "Distribution of Education Levels") +
+  theme_minimal()
+
+
+
+```
+
+```{r}
+library(ggplot2)
+
+# Replace "IAP", "DK", and "NA" with NA
+HAPPY <- HAPPY %>%
+  mutate(DEGREE = ifelse(DEGREE %in% c("IAP", "DK", "NA"), NA, INCOME))
+
+# Create scatterplot of HAPPY vs. AGE, colored by INCOME
+ggplot(HAPPY, aes(x = AGE, y = HAPPY, color = INCOME)) +
+  geom_point() +
+  labs(x = "Age", y = "Happiness Level", title = "Relationship between Age, Income, and Happiness") +
+  theme_minimal()
+
+
+
+
+
+```
+
+```{r}
+
+
+```
+
